@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App Using Local-Storage</title>
+</head>
+
+<body>
+    <div>
+        <h1>Todo App</h1>
+        <input type="text" id="todoInput" placeholder="Enter Your Task">
+        <button onclick="addTodo()">Add Todo</button>
+        <button onclick="clearAll()">Clear Todo's</button>
+        
+        <ul id="todoList"></ul>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+
+    function addTodo() {
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        // console.log(tasks)
+        let taskInput = document.getElementById('todoInput').value;
+        tasks.push(taskInput)
+
+        localStorage.setItem('tasks', JSON.stringify(tasks))
+        displayData()
+    }
+
+
+    function displayData() {
+        let tasks = JSON.parse(localStorage.getItem("tasks"));
+        let taskList = document.getElementById('todoList')
+
+       taskList.innerHTML=''
+
+        tasks.forEach(element => {
+            let li = document.createElement('li')
+            li.innerText = element;
+
+            taskList.append(li)
+
+        });
+    }
+    
+    function clearAll(){
+        localStorage.removeItem('tasks')
+        displayData()
+    }
+    displayData()
+
+</script>
