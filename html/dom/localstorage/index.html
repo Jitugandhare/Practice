@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Storage</title>
+</head>
+
+<body>
+    <h1>Shopping List</h1>
+    <input type="text" id="itemInput">
+    <button onclick="addItem()">ADD PRODUCT</button>
+    <ul id="list"></ul>
+</body>
+
+</html>
+
+<script>
+    function addItem() {
+        let item = document.getElementById('itemInput');
+        let value = item.value;
+        let ul = document.getElementById('list')
+        let li = document.createElement('li')
+
+        li.innerHTML = value;
+
+        ul.appendChild(li)
+    }
+
+</script>
