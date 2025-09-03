@@ -5,6 +5,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo App Using Local-Storage</title>
+    <style>
+        #todoList {
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            margin: 30px;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .todo-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            width: 200px;
+            height: 200px;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .todo-title {
+            text-align: center;
+            font-size: 3rem;
+            background: linear-gradient(90deg, #261fa0, #ee0979);
+            background-clip: text;
+            color: transparent;
+        }
+
+        .editbtn {
+            background-color: #157a49;
+            border: none;
+            border-color: #ee0979;
+            border-radius: 80px;
+            width: 100%;
+            color: aliceblue;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 7px;
+
+        }
+
+        .deletebtn {
+            background-color: #b62a34;
+            border: none;
+            border-color: #b62a35;
+            border-radius: 80px;
+            width: 100%;
+            color: aliceblue;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 7px;
+
+        }
+    </style>
 </head>
 
 <body>
@@ -13,8 +69,11 @@
         <input type="text" id="todoInput" placeholder="Enter Your Task">
         <button onclick="addTodo()">Add Todo</button>
         <button onclick="clearAll()">Clear Todo's</button>
-        
-        <ul id="todoList"></ul>
+
+
+    </div>
+    <div id="todoList">
+
     </div>
 
 </body>
@@ -28,6 +87,7 @@
         // console.log(tasks)
         let taskInput = document.getElementById('todoInput').value;
         tasks.push(taskInput)
+        document.getElementById('todoInput').value = ""
 
         localStorage.setItem('tasks', JSON.stringify(tasks))
         displayData()
@@ -38,21 +98,53 @@
         let tasks = JSON.parse(localStorage.getItem("tasks"));
         let taskList = document.getElementById('todoList')
 
-       taskList.innerHTML=''
+        taskList.innerHTML = ''
 
-        tasks.forEach(element => {
-            let li = document.createElement('li')
-            li.innerText = element;
+        tasks.forEach((element, index) => {
+            let div = document.createElement('div')
+            div.className = "todo-card"
+            let headingElement = document.createElement('h2')
+            headingElement.innerText = element
+            headingElement.className = 'todo-title'
+            // div.innerText = element;
+            let deletebtn = document.createElement('button')
+            deletebtn.innerText = 'Delete'
+            deletebtn.className = 'deletebtn'
 
-            taskList.append(li)
+            deletebtn.onclick = function () {
+                tasks.splice(index, 1)
+                localStorage.setItem('tasks', JSON.stringify(tasks))
+                displayData()
+
+            }
+
+            let editbtn = document.createElement('button')
+            editbtn.innerText = 'Edit'
+            editbtn.className = 'editbtn'
+
+            editbtn.onclick=function(){
+                let update=prompt('Edit task',element)
+                if(update!==null && update.trim()!==""){
+                    tasks[index]=update.trim()
+                    localStorage.setItem('tasks',JSON.stringify(tasks))
+                    displayData();
+                }
+            }
+
+
+            taskList.append(div)
+            div.append(headingElement)
+            div.append(editbtn)
+            div.append(deletebtn)
 
         });
     }
     
-    function clearAll(){
+    function clearAll() {
         localStorage.removeItem('tasks')
         displayData()
     }
+    
     displayData()
 
 </script>
