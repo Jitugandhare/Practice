@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: rgb(246, 245, 243);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 40%;
+            margin: auto;
+            margin-top: 150px;
+            padding: 15px;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        }
+    </style>
+    <title>register</title>
+</head>
+
+<body>
+    <form method="post" action="/user/register">
+        <h1>Register</h1>
+
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" placeholder="Enter Your Name">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" placeholder="Enter Your Email">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" placeholder="Enter Your Password">
+
+        <button type="submit">Register</button>
+
+    </form>
+</body>
+
+<script>
+    document.querySelector('form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        const res = await fetch('http://localhost:5050/user/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, password })
+        })
+
+        if (res.ok) {
+            window.location.href='login.html'
+        }else{
+            const data = await res.json();
+            alert('registration failed')
+            console.log(data)
+        }
+
+    })
+</script>
+
+</html>
